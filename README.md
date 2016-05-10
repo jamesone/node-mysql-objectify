@@ -11,5 +11,25 @@ This is pretty basic at the moment, but I'd like to build something universal an
 
 At the moment I'm depending on `lodash`, when I have the time to work on this, I'll really put in some effort to build something dynamic and functional, without having to depend on the `lodash groupBy` function. 
 
+#Lodash groupBy
+In my queries I turn my columns into `tableName.columnName` using the `AS` function...You must do this if you want the objectifyMysqlResults function to work, as it splits the results up into objects based on the `tableName`.
+
+With the below function I'm grouping by a `PK` and then mapping the results to look for the `image` field, and then placing the found `image` into an  `images`. 
+
+```
+ // #TODO make this dynamic and not just for images
+  var mergedObjs = _.chain(res)
+          .groupBy('profile.content_ptr_id')
+          .map ( (item, i) => {
+            return _.chain(item[0])
+                .omit('image')
+                .set('images', _.map(item, 'image'))
+                .value( (val) => {
+                  delete item;
+                });
+          })
+          .value();
+```
+
 Note*
 I built this fairly quickly and haven't had time to optimize or make it dynamic! :D 
