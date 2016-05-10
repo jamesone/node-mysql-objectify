@@ -1,3 +1,4 @@
+const _ = require('lodash');
 exports.objectifyMysqlResults = (results) => {
   var oldTableName = null;
 
